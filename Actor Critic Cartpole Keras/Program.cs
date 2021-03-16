@@ -50,6 +50,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//
+using NumSharp;
+using Tensorflow;
+using Tensorflow.Keras;
+using static Tensorflow.Binding;
+using static Tensorflow.KerasApi;
+using Tensorflow.Keras.Utils;
+using System.IO;
+using Tensorflow.Keras.Engine;
+using Tensorflow.Keras.ArgsDefinition;
+using Tensorflow.Keras.Optimizers;
+using Tensorflow.Keras.Layers;
+//
 
 namespace Actor_Critic_Cartpole_Keras
 {
@@ -107,7 +120,7 @@ namespace Actor_Critic_Cartpole_Keras
 
             while (true)  // Run until solved
             {
-                Program.state = env.reset();
+                state = env.reset();
                 var episode_reward = 0;
                 using (var tape = tf.GradientTape())
                 {
@@ -116,8 +129,8 @@ namespace Actor_Critic_Cartpole_Keras
                         env.render(); // Adding this line would show the attempts
                                       // of the agent in a pop up window.
 
-                        Program.state = tf.convert_to_tensor(Program.state);
-                        Program.state = tf.expand_dims(Program.state, 0);
+                        state = tf.convert_to_tensor(state);
+                        state = tf.expand_dims(state, 0);
 
                         // Predict action probabilities and estimated future rewards
                         // from environment state
