@@ -1,0 +1,3 @@
+[submodule ".\\Gym.NET"]
+	path = .\\Gym.NET
+	url = https://github.com/SciSharp/Gym.NET.git

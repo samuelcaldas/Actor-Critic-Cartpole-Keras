@@ -47,22 +47,27 @@ from tensorflow.keras import layers;
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //
+using SixLabors.ImageSharp;
+using Gym.Environments;
+using Gym.Environments.Envs.Classic;
+using Gym.Rendering.WinForm;
+//
 using NumSharp;
 using Tensorflow;
 using Tensorflow.Keras;
-using static Tensorflow.Binding;
-using static Tensorflow.KerasApi;
-using Tensorflow.Keras.Utils;
-using System.IO;
-using Tensorflow.Keras.Engine;
 using Tensorflow.Keras.ArgsDefinition;
-using Tensorflow.Keras.Optimizers;
+using Tensorflow.Keras.Engine;
 using Tensorflow.Keras.Layers;
 using Tensorflow.Keras.Losses;
+using Tensorflow.Keras.Optimizers;
+using Tensorflow.Keras.Utils;
+using static Tensorflow.Binding;
+using static Tensorflow.KerasApi;
 //
 
 namespace Actor_Critic_Cartpole_Keras
@@ -79,7 +84,7 @@ namespace Actor_Critic_Cartpole_Keras
             var max_steps_per_episode = 10000;
             // var env = gym.make("CartPole-v0");  // Create the environment
             CartPoleEnv env = new CartPoleEnv(WinFormEnvViewer.Factory);  // Create the environment
-            env.seed(seed);
+            env.Seed(seed);
             // var eps = np.finfo(np.float32).eps.item();  // Smallest number such that 1.0 + eps != 1.0
             var eps = 1e-5;  // Smallest number such that 1.0 + eps != 1.0
 

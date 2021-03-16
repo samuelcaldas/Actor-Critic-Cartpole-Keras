@@ -5,6 +5,14 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor Critic Cartpole Keras", "Actor Critic Cartpole Keras\Actor Critic Cartpole Keras.csproj", "{6EFE4ABD-1A0F-4C22-9A0D-4C75CA545402}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gym.NET", "Gym.NET", "{9D759E99-A82D-4EF3-BFF6-2DEDE5E71BE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gym", "Gym.NET\src\Gym\Gym.csproj", "{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gym.Environments", "Gym.NET\src\Gym.Environments\Gym.Environments.csproj", "{D24DAA50-A97F-4F94-A2C3-0D2832426B68}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gym.Rendering.WinForm", "Gym.NET\src\Gym.Rendering.WinForm\Gym.Rendering.WinForm.csproj", "{3BA8EB94-9225-4860-9751-7F10B65AF601}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +29,38 @@ Global
 		{6EFE4ABD-1A0F-4C22-9A0D-4C75CA545402}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6EFE4ABD-1A0F-4C22-9A0D-4C75CA545402}.Release|x64.ActiveCfg = Release|x64
 		{6EFE4ABD-1A0F-4C22-9A0D-4C75CA545402}.Release|x64.Build.0 = Release|x64
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E}.Release|x64.Build.0 = Release|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Debug|x64.Build.0 = Debug|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Release|x64.ActiveCfg = Release|Any CPU
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68}.Release|x64.Build.0 = Release|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Debug|x64.Build.0 = Debug|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Release|x64.ActiveCfg = Release|Any CPU
+		{3BA8EB94-9225-4860-9751-7F10B65AF601}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7EDCD3A-8E64-498F-88C5-DCAAE20B1B6E} = {9D759E99-A82D-4EF3-BFF6-2DEDE5E71BE7}
+		{D24DAA50-A97F-4F94-A2C3-0D2832426B68} = {9D759E99-A82D-4EF3-BFF6-2DEDE5E71BE7}
+		{3BA8EB94-9225-4860-9751-7F10B65AF601} = {9D759E99-A82D-4EF3-BFF6-2DEDE5E71BE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9A697FCF-12D6-43AA-A42A-693F062BB535}
