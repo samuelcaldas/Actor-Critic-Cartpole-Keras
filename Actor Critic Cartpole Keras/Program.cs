@@ -62,6 +62,7 @@ using Tensorflow.Keras.Engine;
 using Tensorflow.Keras.ArgsDefinition;
 using Tensorflow.Keras.Optimizers;
 using Tensorflow.Keras.Layers;
+using Tensorflow.Keras.Losses;
 //
 
 namespace Actor_Critic_Cartpole_Keras
@@ -99,18 +100,19 @@ namespace Actor_Critic_Cartpole_Keras
             var num_actions = 2;
             var num_hidden = 128;
 
-            var inputs = layers.Input(shape: (num_inputs,));
-            var common = layers.Dense(num_hidden, activation: "relu")(inputs);
-            var action = layers.Dense(num_actions, activation: "softmax")(common);
-            var critic = layers.Dense(1)(common);
+            LayersApi layers = new LayersApi();
+            var inputs = layers.Input(shape: (num_inputs));
+            var common = layers.Dense(num_hidden, activation: "relu").Apply(inputs);
+            var action = layers.Dense(num_actions, activation: "softmax").Apply(common);
+            var critic = layers.Dense(1).Apply(common);
 
-            var model = keras.Model(inputs: inputs, outputs: [action, critic]);
+            Model model = keras.Model(inputs: inputs, outputs: [action, critic]);
 
             /*/
             //// Train
             /*/
 
-            var optimizer = keras.optimizers.Adam(learning_rate: 0.01);
+            var optimizer = keras.optimizers.Adam(learning_rate: (float)0.01);
             var huber_loss = keras.losses.Huber();
             var action_probs_history = new List<double>();
             var critic_value_history = new List<double>();
@@ -189,7 +191,7 @@ namespace Actor_Critic_Cartpole_Keras
                         // The critic must be updated so that it predicts a better estimate of
                         // the future rewards.
                         critic_losses.Add(
-                            huber_loss(tf.expand_dims(value, 0), tf.expand_dims(ret, 0))
+                            huber_loss.Call(tf.expand_dims(value, 0), tf.expand_dims(ret, 0))
                         );
                     }
 
