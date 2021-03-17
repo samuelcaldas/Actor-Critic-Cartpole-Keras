@@ -74,7 +74,7 @@ namespace Actor_Critic_Cartpole_Keras
 {
     class Program
     {
-        private static object state;
+        private static dynamic state;
 
         static void Main(string[] args)
         {
@@ -102,7 +102,7 @@ namespace Actor_Critic_Cartpole_Keras
             /*/
 
             var num_inputs = 4;
-            var num_actions = 2;
+            NDArray num_actions = 2;
             var num_hidden = 128;
 
             LayersApi layers = new LayersApi();
@@ -111,7 +111,7 @@ namespace Actor_Critic_Cartpole_Keras
             var action = layers.Dense(num_actions, activation: "softmax").Apply(common);
             var critic = layers.Dense(1).Apply(common);
 
-            Model model = keras.Model(inputs: inputs, outputs: [action, critic]);
+            Model model = keras.Model(inputs: inputs, outputs: (action, critic));
 
             /*/
             //// Train
@@ -120,36 +120,43 @@ namespace Actor_Critic_Cartpole_Keras
             var optimizer = keras.optimizers.Adam(learning_rate: (float)0.01);
             var huber_loss = keras.losses.Huber();
             var action_probs_history = new List<double>();
-            var critic_value_history = new List<double>();
+            var critic_value_history = new List<dynamic>();
             var rewards_history = new List<double>();
-            var running_reward = 0;
+            double running_reward = 0;
             var episode_count = 0;
 
             while (true)  // Run until solved
             {
-                state = env.reset();
-                var episode_reward = 0;
+                Program.state = env.Reset();
+                double episode_reward = 0;
                 using (var tape = tf.GradientTape())
                 {
                     for (int timestep = 1; timestep < max_steps_per_episode; timestep++)
                     {
-                        env.render(); // Adding this line would show the attempts
+                        //env.Render(); // Adding this line would show the attempts
                                       // of the agent in a pop up window.
 
-                        state = tf.convert_to_tensor(state);
-                        state = tf.expand_dims(state, 0);
+                        Program.state = tf.convert_to_tensor(Program.state);
+                        Program.state = tf.expand_dims(Program.state, 0);
 
                         // Predict action probabilities and estimated future rewards
                         // from environment state
-                        var (action_probs, critic_value) = model(state);
-                        critic_value_history.Add(critic_value[0, 0]);
+                        // var (action_probs, critic_value) = model.Apply(Program.state);
+                        var pred_result = model.Apply(tf.cast(Program.state, tf.float32));
 
+                            var action_probs = pred_result[0][0];
+                            var critic_value = pred_result[1][0][0];
+
+                        critic_value_history.Add(critic_value);
+
+                        Tensor probabilities = np.squeeze(action_probs);
+                        Console.WriteLine(probabilities);
                         // Sample action from action probability distribution
-                        action = np.random.choice(num_actions, p: np.squeeze(action_probs));
-                        action_probs_history.Add(tf.math.log(action_probs[0, action]));
+                        NDArray chosen_action = np.random.choice(num_actions, probabilities: probabilities.);
+                        action_probs_history.Add(tf.math.log(action_probs[0, chosen_action]));
 
                         // Apply the sampled action in our environment
-                        var (state, reward, done, _) = env.step(action);
+                        var (state, reward, done, _) = env.Step(chosen_action);
                         rewards_history.Add(reward);
                         episode_reward += reward;
 
@@ -163,8 +170,8 @@ namespace Actor_Critic_Cartpole_Keras
                     // - At each timestep what was the total reward received after that timestep
                     // - Rewards in the past are discounted by multiplying them with gamma
                     // - These are the labels for our critic
-                    var returns = new List<double>();
-                    var discounted_sum = 0;
+                    dynamic returns = new List<double>();
+                    double discounted_sum = 0;
 
                     var reverse_rewards_history = rewards_history;
                     reverse_rewards_history.Reverse();
@@ -175,7 +182,7 @@ namespace Actor_Critic_Cartpole_Keras
                     }
 
                     // Normalize
-                    returns = np.array(returns);
+                    returns = np.array(returns.ToArray());
                     returns = (returns - np.mean(returns)) / (np.std(returns) + eps);
                     returns = returns.ToList();
 
@@ -183,8 +190,11 @@ namespace Actor_Critic_Cartpole_Keras
                     var history = zip(action_probs_history, critic_value_history, returns);
                     var actor_losses = new List<double>();
                     var critic_losses = new List<double>();
-                    foreach (var (log_prob, value, ret) in history)
+                    foreach (double[] item in history)
                     {
+                        var log_prob = item[0];
+                        dynamic value = item[1];
+                        dynamic ret = item[2];
                         // At this point in history, the critic estimated that we would get a
                         // total reward = `value` in the future. We took an action with log probability
                         // of `log_prob` and ended up recieving a total reward = `ret`.
@@ -201,7 +211,7 @@ namespace Actor_Critic_Cartpole_Keras
                     }
 
                     // Backpropagation
-                    var loss_value = actor_losses.Sum(x => Convert.ToDouble(x)) + critic_losses.Sum(x => Convert.ToDouble(x));
+                    dynamic loss_value = actor_losses.Sum(x => Convert.ToDouble(x)) + critic_losses.Sum(x => Convert.ToDouble(x));
                     var grads = tape.gradient(loss_value, model.trainable_variables);
                     optimizer.apply_gradients(zip(grads, model.trainable_variables));
 
